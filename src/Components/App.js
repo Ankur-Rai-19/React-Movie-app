@@ -20,11 +20,11 @@ class App extends React.Component {
         console.log("State", this.props.store.getState());
     }
 
-    // it will check in state if this movie is in the favourites array or not
+    // it will check in state if this movie is in the movies favourites array or not
     isMovieFavourite = (movie) => {
-        const { favourites } = this.props.store.getState(); // {list:[], favourite: []}
+        const { movies } = this.props.store.getState(); // {movies:{}, search: {}}
 
-        const index = favourites.indexOf(movie);
+        const index = movies.favourites.indexOf(movie);
 
         if (index !== -1) {
             // movie is favourite
@@ -38,9 +38,8 @@ class App extends React.Component {
     };
 
     render() {
-        // earlier our state is [] but now {list:[], favourite: []}
-        const { list, favourites, showFavourites } =
-            this.props.store.getState(); // using this we can get our state in  our store
+        const { movies } = this.props.store.getState(); // {movies:{}, search: {}}
+        const { list, favourites, showFavourites } = movies; // using this we can get our state in  our store
         console.log("RENDER", this.props.store.getState());
 
         const displayMovies = showFavourites ? favourites : list;
