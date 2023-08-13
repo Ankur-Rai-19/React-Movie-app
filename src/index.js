@@ -1,13 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 
 import "./index.css";
 import App from "./Components/App";
 import rootReducer from "./Reducers";
 
+// this is the curried form of function logger(obj,next,action) MIDDLEWARE
+const logger = function ({ dispatch, getState }) {
+    return function (next) {
+        return function (action) {
+            //middleware code
+            console.log("ACTION TYPE = ", action.type);
+            next(action);
+        };
+    };
+};
+
 //Store Created
-const store = createStore(rootReducer);
+const store = createStore(rootReducer, applyMiddleware(logger));
 console.log("Store", store);
 // console.log("Before State", store.getState());
 
