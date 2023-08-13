@@ -7,15 +7,25 @@ import App from "./Components/App";
 import rootReducer from "./Reducers";
 
 // this is the curried form of function logger(obj,next,action) MIDDLEWARE
-const logger = function ({ dispatch, getState }) {
-    return function (next) {
-        return function (action) {
-            //middleware code
-            console.log("ACTION TYPE = ", action.type);
-            next(action);
-        };
+// const logger = function ({ dispatch, getState }) {
+//     return function (next) {
+//         return function (action) {
+//             //middleware code
+//             console.log("ACTION TYPE = ", action.type);
+//             next(action);
+//         };
+//     };
+// };
+
+//Modifying Middleware (or method)
+const logger =
+    ({ dispatch, getState }) =>
+    (next) =>
+    (action) => {
+        // logger code
+        console.log("ACTION TYPE = ", action.type);
+        next(action);
     };
-};
 
 //Store Created
 const store = createStore(rootReducer, applyMiddleware(logger));
