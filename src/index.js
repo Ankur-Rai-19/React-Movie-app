@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 import "./index.css";
 import App from "./Components/App";
@@ -23,12 +24,26 @@ const logger =
     (next) =>
     (action) => {
         // logger code
-        console.log("ACTION TYPE = ", action.type);
+        if (typeof action !== "function") {
+            console.log("ACTION TYPE = ", action.type);
+        }
         next(action);
     };
 
+// const thunk =
+//     ({ dispatch, getState }) =>
+//     (next) =>
+//     (action) => {
+//         // logger code
+//         if (typeof action === "function") {
+//             action(dispatch);
+//             return;
+//         }
+//         next(action);
+//     };
+
 //Store Created
-const store = createStore(rootReducer, applyMiddleware(logger));
+const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 console.log("Store", store);
 // console.log("Before State", store.getState());
 

@@ -5,6 +5,7 @@ import {
     ADD_TO_FAVOURITE,
     REMOVE_FROM_FAVOURITE,
     SET_SHOW_FAVOURITES,
+    ADD_MOVIE_TO_LIST,
 } from "../Actions";
 
 //Changing the state to {} from []
@@ -51,6 +52,11 @@ export function movies(state = initialMoviesState, action) {
                 showFavourites: action.val,
             };
 
+        case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                list: [action.movie, ...state.list],
+            };
         default:
             return state;
     }
@@ -65,10 +71,11 @@ export function search(state = initialSearchState, action) {
     return state;
 }
 
-const initialRootState = {
-    movies: initialMoviesState,
-    search: initialSearchState,
-};
+// const initialRootState = {
+//     movies: initialMoviesState,
+//     search: initialSearchState,
+// };
+
 // export default function rootReducer(state = initialRootState, action) {
 //     return {
 //         movies: movies(state.movies, action),
