@@ -6,6 +6,7 @@ import {
     REMOVE_FROM_FAVOURITE,
     SET_SHOW_FAVOURITES,
     ADD_MOVIE_TO_LIST,
+    ADD_SEARCH_RESULT,
 } from "../Actions";
 
 //Changing the state to {} from []
@@ -65,10 +66,25 @@ export function movies(state = initialMoviesState, action) {
 //Multiple Reducers
 const initialSearchState = {
     result: {},
+    showSearchResults: false,
 };
 export function search(state = initialSearchState, action) {
-    console.log("SEARCH REDUCERS");
-    return state;
+    // ADD_SEARCH_RESULT;
+    switch (action.type) {
+        case ADD_SEARCH_RESULT:
+            return {
+                ...state,
+                result: action.movie,
+                showSearchResults: true,
+            };
+        case ADD_MOVIE_TO_LIST:
+            return {
+                ...state,
+                showSearchResults: false,
+            };
+        default:
+            return state;
+    }
 }
 
 // const initialRootState = {

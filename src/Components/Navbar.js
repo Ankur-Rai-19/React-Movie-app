@@ -1,13 +1,11 @@
 import React from "react";
 // import { movies } from "../Reducers";
-import { data } from "../data";
 import { addMovieToList, handleMovieSearch } from "../Actions";
 
 class Navbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showSearchResults: true,
             searchText: "",
         };
     }
@@ -32,7 +30,7 @@ class Navbar extends React.Component {
     };
 
     render() {
-        const { showSearchResults } = this.state;
+        const { result: movie, showSearchResults } = this.props.search;
         return (
             <div className="nav">
                 <div className="search-container">
@@ -44,13 +42,13 @@ class Navbar extends React.Component {
                     {showSearchResults && (
                         <div className="search-results">
                             <div className="search-result">
-                                <img src={data[0].Poster} alt="search-pic" />
+                                <img src={movie.Poster} alt="search-pic" />
 
                                 <div className="movie-info">
-                                    <span>{data[0].Title}</span>
+                                    <span>{movie.Title}</span>
                                     <button
                                         onClick={() =>
-                                            this.handleAddToMovies(data[0])
+                                            this.handleAddToMovies(movie)
                                         }
                                     >
                                         Add to Movies
@@ -64,5 +62,13 @@ class Navbar extends React.Component {
         );
     }
 }
+
+// function mapStateToProps({ search }) {
+//     return {
+//         search,
+//     };
+// }
+
+// export default connect(mapStateToProps)(Navbar);
 
 export default Navbar;
