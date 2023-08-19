@@ -48,16 +48,15 @@ export function addMovieToList(movie) {
     };
 }
 
-export function handleMovieSearch(seachText) {
-    const url = `http://www.omdbapi.com/?apikey=61c84197&t=${seachText}`;
-
+export function handleMovieSearch(searchText) {
     //Async action Thunk Middleware
     return function (dispatch) {
+        const url = `http://www.omdbapi.com/?apikey=61c84197&t=${searchText}`;
         fetch(url)
             .then((response) => response.json())
             .then((movie) => {
                 console.log("movie", movie);
-                //dispatch an action to store
+                //dispatch action to save Search result in store
                 dispatch(addMovieSearchResult(movie));
             });
 

@@ -1,29 +1,23 @@
 import React from "react";
-import { data } from "../data";
+import { data as moviesList } from "../data";
 import Navbar from "./Navbar";
 import MovieCard from "./MovieCard";
 import { addMovies, setShowFavourite } from "../Actions";
-import { StoreContext } from "../index";
+import { connect } from "../index";
 
 class App extends React.Component {
     componentDidMount() {
-        const { store } = this.props;
-        store.subscribe(() => {
-            console.log("UPDATED");
-            // we should not do the force update always
-            this.forceUpdate();
-        });
-        // make api Call to get the movies after that
+        // const { store } = this.props;
 
         /* is dispatching an action to add movies to the store. */
-        store.dispatch(addMovies(data));
+        this.props.dispatch(addMovies(moviesList));
 
-        console.log("State", this.props.store.getState());
+        // console.log("State", this.props.store.getState());
     }
 
     // it will check in state if this movie is in the movies favourites array or not
     isMovieFavourite = (movie) => {
-        const { movies } = this.props.store.getState(); // {movies:{}, search: {}}
+        const { movies } = this.props; // {movies:{}, search: {}}
 
         const index = movies.favourites.indexOf(movie);
 
@@ -35,13 +29,13 @@ class App extends React.Component {
     };
 
     onChangeTab = (val) => {
-        this.props.store.dispatch(setShowFavourite(val));
+        this.props.dispatch(setShowFavourite(val));
     };
 
     render() {
-        const { movies, search } = this.props.store.getState(); // {movies:{}, search: {}}
-        const { list, favourites, showFavourites } = movies; // using this we can get our state in  our store
-        console.log("RENDER", this.props.store.getState());
+        const { movies, search } = this.props; // {movies:{}, search: {}}
+        const { list, favourites = [], showFavourites = [] } = movies; // using this we can get our state in  our store
+        // console.log("RENDER", this.props.store.getState());
 
         const displayMovies = showFavourites ? favourites : list;
 
@@ -73,7 +67,7 @@ class App extends React.Component {
                             <MovieCard
                                 movie={movie}
                                 key={`movies-${index}`}
-                                dispatch={this.props.store.dispatch}
+                                dispatch={this.props.dispatch}
                                 isFavourite={this.isMovieFavourite(movie)}
                             />
                         ))}
@@ -89,14 +83,29 @@ class App extends React.Component {
     }
 }
 
-class AppWrapper extends React.Component {
-    render() {
-        return (
-            <StoreContext.Consumer>
-                {(store) => <App store={store} />}
-            </StoreContext.Consumer>
-        );
-    }
-}
+/* The AppWrapper class is a React component that renders the App component and passes the store as a prop. */
+// class AppWrapper extends React.Component {
+//     render() {
+//         return (
+//             <StoreContext.Consumer>
+//                 {(store) => <App store={store} />}
+//             </StoreContext.Consumer>
+//         );
+//     }
+// }
 
-export default AppWrapper;
+/**
+ * The `state` parameter is the current state of the Redux store. It contains all the data that has been stored in the store.
+ * The connect function is returning a new component called connectedAppComponent.
+ */
+function mapStateToProps(state) {
+    // I want these properties
+    return {
+        movies: state.movies,
+        search: state.movies,
+    };
+}
+//Created a connect and told connect function that i want the above properties from the store as props inside my App component
+const connectedAppComponent = connect(mapStateToProps)(App);
+
+export default connectedAppComponent;
