@@ -1,5 +1,6 @@
-import React, { createContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 
@@ -47,62 +48,62 @@ const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 // console.log("Store", store);
 console.log("State", store.getState());
 
-export const StoreContext = createContext();
-console.log("StoreContext", StoreContext);
+// export const StoreContext = createContext();
+// console.log("StoreContext", StoreContext);
 
 /* It provides a store to its children components through the StoreContext. */
-class Provider extends React.Component {
-    render() {
-        const { store } = this.props;
-        return (
-            <StoreContext.Provider value={store}>
-                {this.props.children}
-            </StoreContext.Provider>
-        );
-    }
-}
+// class Provider extends React.Component {
+//     render() {
+//         const { store } = this.props;
+//         return (
+//             <StoreContext.Provider value={store}>
+//                 {this.props.children}
+//             </StoreContext.Provider>
+//         );
+//     }
+// }
 
 //const connectedAppComponent = connect(callback)(App);
-export function connect(callback) {
-    //Returning another function and get the component as an argument
-    return function (Component) {
-        class ConnectedComponent extends React.Component {
-            constructor(props) {
-                super(props);
-                this.unsubscribe = this.props.store.subscribe(() => {
-                    this.forceUpdate();
-                });
-            }
-            componentWillUnmount() {
-                this.unsubscribe();
-            }
+// export function connect(callback) {
+//     //Returning another function and get the component as an argument
+//     return function (Component) {
+//         class ConnectedComponent extends React.Component {
+//             constructor(props) {
+//                 super(props);
+//                 this.unsubscribe = this.props.store.subscribe(() => {
+//                     this.forceUpdate();
+//                 });
+//             }
+//             componentWillUnmount() {
+//                 this.unsubscribe();
+//             }
 
-            render() {
-                const { store } = this.props;
-                // to get the state form redux
-                const state = store.getState();
-                const dataToBePassedAsProps = callback(state);
-                return (
-                    <Component
-                        {...dataToBePassedAsProps}
-                        dispatch={store.dispatch}
-                    />
-                );
-            }
-        }
+//             render() {
+//                 const { store } = this.props;
+//                 // to get the state form redux
+//                 const state = store.getState();
+//                 const dataToBePassedAsProps = callback(state);
+//                 return (
+//                     <Component
+//                         {...dataToBePassedAsProps}
+//                         dispatch={store.dispatch}
+//                     />
+//                 );
+//             }
+//         }
 
-        class ConnectedComponentWrapper extends React.Component {
-            render() {
-                return (
-                    <StoreContext.Consumer>
-                        {(store) => <ConnectedComponent store={store} />}
-                    </StoreContext.Consumer>
-                );
-            }
-        }
-        return ConnectedComponentWrapper;
-    };
-}
+//         class ConnectedComponentWrapper extends React.Component {
+//             render() {
+//                 return (
+//                     <StoreContext.Consumer>
+//                         {(store) => <ConnectedComponent store={store} />}
+//                     </StoreContext.Consumer>
+//                 );
+//             }
+//         }
+//         return ConnectedComponentWrapper;
+//     };
+// }
 
 //Dispatched Action
 // store.dispatch({

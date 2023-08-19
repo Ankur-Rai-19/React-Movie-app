@@ -1,7 +1,7 @@
 import React from "react";
-// import { movies } from "../Reducers";
+import { connect } from "react-redux";
+
 import { addMovieToList, handleMovieSearch } from "../Actions";
-import { connect } from "../index";
 
 class Navbar extends React.Component {
     constructor(props) {
